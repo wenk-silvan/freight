@@ -14,10 +14,11 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        this.ProcessInput();
+        this.Thrust();
+        this.Rotate();
     }
 
-    private void ProcessInput()
+    private void Thrust()
     {
         if (Input.GetKey(KeyCode.Space))
         {
@@ -28,7 +29,10 @@ public class Rocket : MonoBehaviour
         {
             this.thrustingSound.Stop();
         }
+    }
 
+    private void Rotate()
+    {
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.forward);
