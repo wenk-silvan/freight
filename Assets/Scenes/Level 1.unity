@@ -378,8 +378,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1673540442, guid: 44d53f5d3478ba244a9fd46cc82c66c3, type: 3}
-      propertyPath: m_Constraints
-      value: 56
+      propertyPath: m_Drag
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673540442, guid: 44d53f5d3478ba244a9fd46cc82c66c3, type: 3}
+      propertyPath: m_Mass
+      value: 0.08
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d53f5d3478ba244a9fd46cc82c66c3, type: 3}
