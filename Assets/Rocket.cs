@@ -21,6 +21,22 @@ public class Rocket : MonoBehaviour
         this.Rotate();
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        switch(collision.gameObject.tag)
+        {
+            case "Friendly":
+                print("OK");
+                break;
+            case "Fuel":
+                print("Refilled fuel");
+                break;
+            default:
+                print("Dead");
+                break;
+        }
+    }
+
     private void Thrust()
     {
         var thrustThisFrame = this.mainThrust * Time.deltaTime;
