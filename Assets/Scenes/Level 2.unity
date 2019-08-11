@@ -760,7 +760,7 @@ PrefabInstance:
     - target: {fileID: 776457371147628008, guid: 149dfcf2295fac04b9e7d19286ad4206,
         type: 3}
       propertyPath: m_Name
-      value: Obstacle (2)
+      value: Obstacle
       objectReference: {fileID: 0}
     - target: {fileID: 776457371147628004, guid: 149dfcf2295fac04b9e7d19286ad4206,
         type: 3}
@@ -850,7 +850,7 @@ PrefabInstance:
     - target: {fileID: 776457371147628008, guid: 149dfcf2295fac04b9e7d19286ad4206,
         type: 3}
       propertyPath: m_Name
-      value: Obstacle (1)
+      value: Obstacle
       objectReference: {fileID: 0}
     - target: {fileID: 776457371147628004, guid: 149dfcf2295fac04b9e7d19286ad4206,
         type: 3}

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -7,11 +8,13 @@ public class Rocket : MonoBehaviour
 
     Rigidbody rigidBody;
     AudioSource thrustingSound;
+    int levelCounter;
 
     private void Start()
     {
         this.rigidBody = GetComponent<Rigidbody>();
         this.thrustingSound = GetComponent<AudioSource>();
+        this.levelCounter = 0;
     }
 
     // Update is called once per frame
@@ -28,11 +31,21 @@ public class Rocket : MonoBehaviour
             case "Friendly":
                 print("OK");
                 break;
+            case "Finish":
+                print("Hit finish");
+                //this.levelCounter = this.levelCounter + 1;
+                //if (this.levelCounter > SceneManager.sceneCount - 1)
+                //{
+                //    this.levelCounter = 0;
+                //}
+                SceneManager.LoadScene(1);
+                break;
             case "Fuel":
                 print("Refilled fuel");
                 break;
             default:
                 print("Dead");
+                SceneManager.LoadScene(0);
                 break;
         }
     }
