@@ -3,51 +3,74 @@ using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
-    [SerializeField] float rcsThrust = 100f;
-    [SerializeField] float mainThrust = 100f;
+    [SerializeField] private float rcsThrust = 100f;
+    [SerializeField] private float mainThrust = 100f;
 
-    Rigidbody rigidBody;
-    AudioSource thrustingSound;
-    int levelCounter;
+    private Rigidbody rigidBody;
+    private AudioSource thrustingSound;
+
+    private enum State
+    {
+        Alive,
+        Dying,
+        Transcending,
+    }
+
+    [SerializeField] private State state = State.Alive;
 
     private void Start()
     {
         this.rigidBody = GetComponent<Rigidbody>();
         this.thrustingSound = GetComponent<AudioSource>();
-        this.levelCounter = 0;
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (this.state == State.Dying || this.state == State.Transcending)
+        {
+            this.thrustingSound.Stop();
+            return;
+        }
+
         this.Thrust();
         this.Rotate();
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        switch(collision.gameObject.tag)
+        if (state != State.Alive) return;
+
+        switch (collision.gameObject.tag)
         {
             case "Friendly":
                 print("OK");
                 break;
+
             case "Finish":
-                print("Hit finish");
-                //this.levelCounter = this.levelCounter + 1;
-                //if (this.levelCounter > SceneManager.sceneCount - 1)
-                //{
-                //    this.levelCounter = 0;
-                //}
-                SceneManager.LoadScene(1);
+                state = State.Transcending;
+                Invoke("LoadNextLevel", 1f);
                 break;
+
             case "Fuel":
                 print("Refilled fuel");
                 break;
+
             default:
-                print("Dead");
-                SceneManager.LoadScene(0);
+                state = State.Dying;
+                Invoke("LoadFirstLevel", 2f);
                 break;
         }
+    }
+
+    private void LoadFirstLevel()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void LoadNextLevel()
+    {
+        SceneManager.LoadScene(1);
     }
 
     private void Thrust()
