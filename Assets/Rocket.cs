@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
+    private int currentLevelIndex = 0;
+
     [SerializeField] private float rcsThrust = 100f;
     [SerializeField] private float mainThrust = 100f;
 
@@ -73,7 +75,7 @@ public class Rocket : MonoBehaviour
         this.audioSource.PlayOneShot(this.explosion);
         this.mainEngineParticles.Stop();
         this.explosionParticles.Play();
-        Invoke("LoadFirstLevel", 2f);
+        Invoke("LoadSameLevel", 2f);
     }
 
     private void OnFinishLevel()
@@ -86,14 +88,20 @@ public class Rocket : MonoBehaviour
         Invoke("LoadNextLevel", 1f);
     }
 
-    private void LoadFirstLevel()
+    private void LoadSameLevel()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void LoadNextLevel()
     {
-        SceneManager.LoadScene(1);
+        var nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex == SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(0);
+            return;
+        }
+        SceneManager.LoadScene(nextLevelIndex);
     }
 
     private void RespondToThrustInput()
