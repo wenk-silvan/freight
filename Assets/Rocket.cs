@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
@@ -19,6 +20,8 @@ public class Rocket : MonoBehaviour
     private Rigidbody rigidBody;
     private AudioSource audioSource;
 
+    bool collisionsDisabled = false;
+
     private enum State
     {
         Alive,
@@ -37,6 +40,11 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Debug.isDebugBuild)
+        {
+            this.RespondToDebugKey();
+        }
+
         if (this.state == State.Dying || this.state == State.Transcending)
         {
             return;
@@ -46,9 +54,21 @@ public class Rocket : MonoBehaviour
         this.RespondToRotateInput();
     }
 
+    private void RespondToDebugKey()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            this.LoadNextLevel();
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            this.collisionsDisabled = !this.collisionsDisabled;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (state != State.Alive) return;
+        if (state != State.Alive || this.collisionsDisabled) return;
 
         switch (collision.gameObject.tag)
         {
