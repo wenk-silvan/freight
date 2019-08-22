@@ -21,15 +21,7 @@ public class Rocket : MonoBehaviour
     private AudioSource audioSource;
 
     bool collisionsDisabled = false;
-
-    private enum State
-    {
-        Alive,
-        Dying,
-        Transcending,
-    }
-
-    private State state = State.Alive;
+    bool isTransitioning = false;
 
     private void Start()
     {
@@ -45,7 +37,7 @@ public class Rocket : MonoBehaviour
             this.RespondToDebugKey();
         }
 
-        if (this.state == State.Dying || this.state == State.Transcending)
+        if (this.isTransitioning)
         {
             return;
         }
@@ -68,7 +60,7 @@ public class Rocket : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (state != State.Alive || this.collisionsDisabled) return;
+        if (this.isTransitioning || this.collisionsDisabled) return;
 
         switch (collision.gameObject.tag)
         {
@@ -90,7 +82,7 @@ public class Rocket : MonoBehaviour
 
     private void OnDeadlyCollision()
     {
-        state = State.Dying;
+        this.isTransitioning = true;
         this.audioSource.Stop();
         this.audioSource.PlayOneShot(this.explosion);
         this.mainEngineParticles.Stop();
@@ -100,7 +92,7 @@ public class Rocket : MonoBehaviour
 
     private void OnFinishLevel()
     {
-        state = State.Transcending;
+        this.isTransitioning = true;
         this.audioSource.Stop();
         this.audioSource.PlayOneShot(this.victory);
         this.mainEngineParticles.Stop();
